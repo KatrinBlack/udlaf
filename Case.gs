@@ -41,7 +41,7 @@ function onOpen() {
   if (!rows[1]) {
     menu.addItem('No Application in row 1', 'empty');
   } else {
-    menu.addItem(`Approve Applicant ${rows[1][0]}`, 'caseReport');
+    menu.addItem(`Approve Applicant ${rows[1][1]}`, 'caseReport');
   }
   
   menu.addToUi();
@@ -52,7 +52,7 @@ function empty() {}
 
 // Replaces placeholders in the document body with actual values
 function replacePlaceholders(body, placeholders) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Center');
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Responses');
   const rows = sheet.getDataRange().getValues();
   
   for (const placeholder in placeholders) {
@@ -83,36 +83,11 @@ function caseStudent(rows) {
   const caseFolder = DriveApp.getFolderById(DESTINATION_FOLDER).createFolder(`${rows[1][0]}`);
 
   generateDocumentFromTemplate(TEMPLATE_STUDENT_0, caseFolder, `${rows[1][0]} - Case Report`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_1, caseFolder, `${rows[1][0]} - Notification Memo`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_2, caseFolder, `${rows[1][0]} - Materials Request`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_3, caseFolder, `${rows[1][0]} - Implicating Student Testimony`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_4, caseFolder, `${rows[1][0]} - Interview Invitation`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_5, caseFolder, `${rows[1][0]} - Case Debriefing`, PLACEHOLDERS_STUDENT);
-  generateDocumentFromTemplate(TEMPLATE_STUDENT_6, caseFolder, `${rows[1][0]} - Professor Notification`, PLACEHOLDERS_STUDENT);
 }
 
-// Generates case materials for a faculty case
-function caseFaculty(rows) {
-
-  const caseFolder = DriveApp.getFolderById(DESTINATION_FOLDER).createFolder(`${rows[1][0]}`);
-
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_0, caseFolder, `${rows[1][0]} - Case Report`, PLACEHOLDERS_FACULTY);
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_1, caseFolder, `${rows[1][0]} - Notification Memo`, PLACEHOLDERS_FACULTY);
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_2, caseFolder, `${rows[1][0]} - Materials Request`, PLACEHOLDERS_FACULTY);
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_4, caseFolder, `${rows[1][0]} - Interview Invitation`, PLACEHOLDERS_FACULTY);
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_5, caseFolder, `${rows[1][0]} - Case Debriefing`, PLACEHOLDERS_FACULTY);
-  generateDocumentFromTemplate(TEMPLATE_FACULTY_6, caseFolder, `${rows[1][0]} - Professor Notification`, PLACEHOLDERS_FACULTY);
-}
 
 // Entry point for generating case materials
 function caseReport() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Center');
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Responses');
   const rows = sheet.getDataRange().getValues();
-
-  // Determine case type and generate materials accordingly
-  if (rows[1][5] === 'Student-Implicated: Faculty/staff member reporting a student-implicated Honor System violation.') {
-    caseStudent(rows);
-  } else if (rows[1][5] === 'Faculty-Implicated: Faculty/staff member reporting a faculty-implicated Honor System violation.') {
-    caseFaculty(rows);
-  }
 }
