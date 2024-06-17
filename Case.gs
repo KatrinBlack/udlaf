@@ -1,79 +1,47 @@
 // Define named constants for template IDs and destination folder ID
-const TEMPLATE_STUDENT_0 = '1YZeAV9U9QGehjz89AYtw2I_jhsq_6xgBO32ASH-k2do';      // URL for Case Report
-const TEMPLATE_STUDENT_1 = '1XVDjJXlKSvu2UbuWFNk2__M0LVT4a3yi2wrlmq44nzA';      // URL for Notification Memo
-const TEMPLATE_STUDENT_2 = '1WaSLVn8m_7U38928jXgB9Cy6zx396c1rO5xpHEXg0B4';      // URL for Materials Request
-const TEMPLATE_STUDENT_3 = '1XesdryqUjzPkJcAJ6GE_HQ623pMj9osldfR2baBjHlE';      // URL for Implicating Student Testimony
-const TEMPLATE_STUDENT_4 = '1KjmsIR34dDJcfmD80uRPb7Iw7tT5oxmFNLyXt3kz6C0';      // URL for Interview Invitation
-const TEMPLATE_STUDENT_5 = '1ARYEm2TY9eeelMyZri8i_qClA6TLnDkos8TlFJg8rDg';      // URL for Case Debriefing
-const TEMPLATE_STUDENT_6 = '13js-uRqq2KlQh2FI454s7BM40ZsAxp6NGy1DX5GPhn4';      // URL for Professor Notification
+const TEMPLATE_APPLICATION = '1AILohNfCVQLE_iXNJ39lTdWmUZQvOhHX_NF_Kfjm_5g';      // URL for Application response
 
-const TEMPLATE_FACULTY_0 = '1bpQKf_ADN7WRNMv4i_bWyHGk_jELEsArRHIfpH_8OjU';      // URL for Case Report
-const TEMPLATE_FACULTY_1 = '1RO27FGHuEPdoNfsqP2OlyWKv1bURo5QdLxENjsCTTUk';      // URL for Notification Memo
-const TEMPLATE_FACULTY_2 = '1jSN5S0Vr33IKGLgbWf7DS7BvnPGfgwtO2Me2g3OPqGs';      // URL for Materials Request
-const TEMPLATE_FACULTY_4 = '1q2wlJYivleIZ8uzmh3KtZ60jhCErwvxzPFdx10JRLSw';      // URL for Interview Invitation
-const TEMPLATE_FACULTY_5 = '1h4xI36stoa-xtS2VeGhH4hPN73l5L7K1k_jv-CGNlcA';      // URL for Case Debriefing
-const TEMPLATE_FACULTY_6 = '1Bewj8O5o3ynASZ46df8QATNADBp0Zle5SkYeeO7VWJ0';      // URL for Professor Notification
-
-const DESTINATION_FOLDER = '1bn8rbz56HrvLcX6jiH5yP_AhqpFQyGIe';
+const DESTINATION_FOLDER = '112ReA8Ct-bTbl_RzcMX2fJqFI-7k-YRG';
 
 // Define placeholders for student and faculty cases
-const PLACEHOLDERS_STUDENT = {
-  'case number': 0,
-  'ProfFN': 2,
-  'ProfLN': 3,
-  'dept': 25,
-  'class': 26,
-  'section': 27,
-  'courseterm': 28,
-  'examdaydate': 29,
-  'examnumber': 30,
-  'examtopic': 31,
-  'examformat': 32,
-  'studentname': 33,
-  'relationship': 34,
-  'resources': 35
-};
+const PLACEHOLDERS_APPLICATION = {
+  'Date': 0,
+  'FirstName': 0,
+  'LastName': 2,
+  'Street': 3,
+  'City': 25,
+  'State': 26,
+  'Postal': 27,
+  'Country': 0,
+  'DateOfBirth': 0,
+  'EmailP': 2,
+  'Phone': 3,
 
-const PLACEHOLDERS_FACULTY = {
-  'case number': 0,
-  'ProfFN': 2,
-  'ProfLN': 3,
-  'affiliation': 4,
-  'anon': 6,
-  'dept': 7,
-  'class': 8,
-  'section': 9,
-  'courseterm': 10,
-  'examdaydate': 11,
-  'examnumber': 12,
-  'examtopic': 13,
-  'examformat': 14,
-  'studentname': 15,
-  'examgrade': 16,
-  'discussionoutcome': 17,
-  'implicationdes': 18,
-  'desiredres': 19,
-  'relationship': 20,
-  'resources': 21,
-  'additional': 22,
-  'colleague': 23,
-  'followup': 24
+  'Embassy': 25,
+  'Consulate': 26,
+  'JobTitle': 27,  
+  'Status': 25,
+  'GAP': 26,
+  'EmailW': 27,
+
+  'EmailPreference': 25,
+  'DuesPreference': 26,
 };
 
 // Triggered when the spreadsheet is opened
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  const menu = ui.createMenu('Case Management');
+  const menu = ui.createMenu('Application Approval');
    
-  // Get data from the 'Form Center' sheet
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Center');
+  // Get data from the 'Form Responses' sheet
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Responses');
   const rows = sheet.getDataRange().getValues();
 
   // Add menu items based on case availability
   if (!rows[1]) {
-    menu.addItem('No Cases Identified', 'empty');
+    menu.addItem('No Application in row 1', 'empty');
   } else {
-    menu.addItem(`Create Case Material for Case ${rows[1][0]}`, 'caseReport');
+    menu.addItem(`Approve Applicant ${rows[1][0]}`, 'caseReport');
   }
   
   menu.addToUi();
